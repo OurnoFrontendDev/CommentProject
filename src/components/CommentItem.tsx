@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { IComments } from 'src/models/IComments';
 import { ReplyModalForm } from './ReplyForm';
 import { FaReplyd, FaTrash } from 'react-icons/fa';
@@ -29,11 +29,12 @@ export const CommentItem: React.FC<{
   replies: IComments[];
   onDelete: (id: string) => void;
 }> = ({ comment, replies, onDelete, like, dislike, getReplies }) => {
-  const [showReplyForm, setShowReplyForm] = useState(false);
   const [likeComment] = useLikeCommentMutation();
   const [disLikeComment] = useDislikeCommentMutation();
 
-  const handleLike = async () => {
+  const [showReplyForm, setShowReplyForm] = useState(false);
+
+  const handleLike = useCallback(async () => {
     try {
       await likeComment({
         id: comment.id,
@@ -42,9 +43,9 @@ export const CommentItem: React.FC<{
     } catch (error) {
       console.error('Ошибка при лайке:', error);
     }
-  };
+  }, [comment.id, like]);
 
-  const handleDisLike = async () => {
+  const handleDisLike = useCallback(async () => {
     try {
       await disLikeComment({
         id: comment.id,
@@ -53,20 +54,21 @@ export const CommentItem: React.FC<{
     } catch (error) {
       console.error('Ошибка при дизлайке:', error);
     }
-  };
+  }, [comment.id, dislike]);
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     if (window.confirm('Уверены, что хотите удалить?')) {
       onDelete(comment.id);
     }
-  };
-  const avatarSrc =
-    comment.username === 'John Doe' ? '/img/avatar1.jpg' : '/img/avatar2.jpg';
+  }, [comment.id]);
 
-  const handleReplyFormClose = () => {
+  const avatarSrc = useMemo(() => (
+    comment.username === 'John Doe' ? '/img/avatar1.jpg' : '/img/avatar2.jpg'
+  ), [comment.username]);
+
+  const handleReplyFormClose = useCallback(() => {
     setShowReplyForm(false);
-  };
-
+  }, []);
   return (
     <CommentContentContainer>
       <CommentItemAvNameContainer>
@@ -113,3 +115,5 @@ export const CommentItem: React.FC<{
     </CommentContentContainer>
   );
 };
+
+export const MemoizedCommentItem = React.memo(CommentItem);

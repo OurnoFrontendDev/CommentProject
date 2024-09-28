@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useAddCommentMutation } from '../api/commentApi';
 import { AiOutlineBold, AiOutlineItalic, AiOutlineLink } from 'react-icons/ai';
 import {
@@ -21,23 +21,23 @@ export interface CommentFormProps {
 }
 
 export const CommentForm: React.FC<CommentFormProps> = ({
-  parentId,
-  username,
-  avatar,
-  initialContent,
-}) => {
+                                                          parentId,
+                                                          username,
+                                                          avatar,
+                                                          initialContent,
+                                                        }) => {
   const [addComment] = useAddCommentMutation();
 
   const [content, setContent] = useState(initialContent || '');
 
   const isDisabledFormAdd = content.length === 0;
 
-  const handleTextFormatClick = (tag: string) => {
+  const handleTextFormatClick = useCallback((tag: string) => {
     const newText = `${tag}${content}${tag}`;
     setContent(newText);
-  };
+  }, [content]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (content) {
       const newComment = {
@@ -58,7 +58,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({
         console.error('Failed to add comment', error);
       }
     }
-  };
+  }, [content, addComment, parentId, username]);
 
   return (
     <FormContainer>

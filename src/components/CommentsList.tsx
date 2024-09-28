@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   useDeleteCommentMutation,
   useGetCommentsQuery,
 } from '../api/commentApi';
-import { CommentItem } from './CommentItem';
+import {  MemoizedCommentItem } from './CommentItem';
 import { VariableSizeList as List } from 'react-window';
 import {
   CommentContainer,
@@ -17,17 +17,17 @@ export const CommentsList = () => {
   const itemsHeights = useRef<Record<number, number>>({});
   const virtualList = useRef<List>(null);
 
-  const handleDelete = async (id: string) => {
+  const handleDeleteComments = useCallback(async (id: string) => {
     try {
       await deleteComment(id).unwrap();
     } catch (error) {
       console.error('Ошибка при удалении комментария:', error);
     }
-  };
+  }, [deleteComment]);
 
-  const getReplies = (parentId: string | null) => {
+  const getReplies = useCallback((parentId: string | null) => {
     return comments?.filter((comment) => comment.parentId === parentId) || [];
-  };
+  }, [comments]);
 
   const getDialogItemSize = (index: number) =>
     itemsHeights.current[index] || 200;
@@ -46,8 +46,10 @@ export const CommentsList = () => {
     [itemsHeights],
   );
 
-  const parentComments =
-    comments?.filter((comment) => comment.parentId === null) || [];
+  const parentComments = useMemo(
+    () => comments?.filter((comment) => comment.parentId === null) || [],
+    [comments]
+  );
 
   const Row: React.FC<{ index: number; style: object }> = ({
     index,
@@ -68,12 +70,12 @@ export const CommentsList = () => {
     return (
       <div style={newStyle} key={comment.id}>
         <CommentContainer ref={ref}>
-          <CommentItem
+          <MemoizedCommentItem
             dislike={comment.dislike}
             like={comment.like}
             comment={comment}
             replies={replies}
-            onDelete={handleDelete}
+            onDelete={handleDeleteComments}
             getReplies={getReplies}
           />
         </CommentContainer>
