@@ -1,9 +1,9 @@
 name: ci test
 on:
   push:
-    branches: [ master ]
+    branches: [ Comment ]
   pull_request:
-    branches: [ master ]
+    branches: [ Comment ]
 jobs:
   init:
     runs-on: ubuntu-latest

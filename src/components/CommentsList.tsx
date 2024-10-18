@@ -3,7 +3,7 @@ import {
   useDeleteCommentMutation,
   useGetCommentsQuery,
 } from '../api/commentApi';
-import {  MemoizedCommentItem } from './CommentItem';
+import { MemoizedCommentItem } from './CommentItem';
 import { VariableSizeList as List } from 'react-window';
 import {
   CommentWrapper,
@@ -17,17 +17,23 @@ export const CommentsList = () => {
   const itemsHeights = useRef<Record<number, number>>({});
   const virtualList = useRef<List>(null);
 
-  const handleDeleteComments = useCallback(async (id: string) => {
-    try {
-      await deleteComment(id).unwrap();
-    } catch (error) {
-      console.error('Ошибка при удалении комментария:', error);
-    }
-  }, [deleteComment]);
+  const handleDeleteComments = useCallback(
+    async (id: string) => {
+      try {
+        await deleteComment(id).unwrap();
+      } catch (error) {
+        console.error('Ошибка при удалении комментария:', error);
+      }
+    },
+    [deleteComment],
+  );
 
-  const getReplies = useCallback((parentId: string | null) => {
-    return comments?.filter((comment) => comment.parentId === parentId) || [];
-  }, [comments]);
+  const getReplies = useCallback(
+    (parentId: string | null) => {
+      return comments?.filter((comment) => comment.parentId === parentId) || [];
+    },
+    [comments],
+  );
 
   const getDialogItemSize = (index: number) =>
     itemsHeights.current[index] || 200;
@@ -38,7 +44,6 @@ export const CommentsList = () => {
         ...itemsHeights.current,
         [index]: size,
       };
-
       if (virtualList.current) {
         virtualList.current.resetAfterIndex(index);
       }
@@ -48,7 +53,7 @@ export const CommentsList = () => {
 
   const parentComments = useMemo(
     () => comments?.filter((comment) => comment.parentId === null) || [],
-    [comments]
+    [comments],
   );
 
   const Row: React.FC<{ index: number; style: object }> = ({
@@ -82,12 +87,19 @@ export const CommentsList = () => {
       </div>
     );
   };
+
+  useEffect(() => {
+    if (virtualList.current && parentComments.length > 0) {
+      virtualList.current.scrollToItem(parentComments.length - 1);
+    }
+  }, [parentComments.length]);
+
   return (
     <StyledList
       height={550}
       itemCount={parentComments.length}
       itemSize={getDialogItemSize}
-      width={700}
+      width={631}
       ref={virtualList}
     >
       {Row}

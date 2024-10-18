@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useReplyCommentMutation } from '../api/commentApi';
 import { usePortal } from '../hooks/usePortal';
 import { createPortal } from 'react-dom';
@@ -9,6 +9,7 @@ import {
   ReplyCommentAddContainer,
   ReplyModalTextArea,
 } from './styledComponents/StyledComponents';
+import useClickOutside from '../hooks/useClickOutside';
 
 interface ReplyFormProps {
   parentId: string;
@@ -20,6 +21,11 @@ export const ReplyModalForm: React.FC<ReplyFormProps> = ({
   onClose,
 }) => {
   const [content, setContent] = useState('');
+
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  useClickOutside(modalRef, onClose);
+
   const [addReplyComment] = useReplyCommentMutation();
 
   const isDisabledReplyAdd = content.length === 0;
@@ -39,7 +45,7 @@ export const ReplyModalForm: React.FC<ReplyFormProps> = ({
   const portalAddReplyModal = usePortal('ReplyModalForm');
   return createPortal(
     <ModalForm>
-      <ModalContent>
+      <ModalContent ref={modalRef}>
         <form onSubmit={handleSubmit}>
           <ReplyModalTextArea
             value={content}
@@ -47,11 +53,7 @@ export const ReplyModalForm: React.FC<ReplyFormProps> = ({
             placeholder="Add new reply"
           />
           <ReplyCommentAddContainer>
-            <ReplyCommentAdd
-              isDisabledFormAdd={isDisabledReplyAdd}
-              type="submit"
-              disabled={isDisabledReplyAdd}
-            >
+            <ReplyCommentAdd type="submit" disabled={isDisabledReplyAdd}>
               Ответить
             </ReplyCommentAdd>
           </ReplyCommentAddContainer>

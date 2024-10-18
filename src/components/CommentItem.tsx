@@ -35,10 +35,11 @@ export const CommentItem: React.FC<{
   const [showReplyForm, setShowReplyForm] = useState(false);
 
   const handleLike = useCallback(async () => {
+    const Like = like === 1 ? 0 : 1;
     try {
       await likeComment({
         id: comment.id,
-        like: like + 1,
+        like: Like,
       }).unwrap();
     } catch (error) {
       console.error('Ошибка при лайке:', error);
@@ -46,10 +47,11 @@ export const CommentItem: React.FC<{
   }, [comment.id, like]);
 
   const handleDisLike = useCallback(async () => {
+    const newDisLike = dislike === 1 ? 0 : 1;
     try {
       await disLikeComment({
         id: comment.id,
-        dislike: dislike + 1,
+        dislike: newDisLike,
       }).unwrap();
     } catch (error) {
       console.error('Ошибка при дизлайке:', error);
@@ -62,9 +64,11 @@ export const CommentItem: React.FC<{
     }
   }, [comment.id]);
 
-  const avatarSrc = useMemo(() => (
-    comment.username === 'John Doe' ? '/img/avatar1.jpg' : '/img/avatar2.jpg'
-  ), [comment.username]);
+  const avatarSrc = useMemo(
+    () =>
+      comment.username === 'John Doe' ? '/img/avatar1.jpg' : '/img/avatar2.jpg',
+    [comment.username],
+  );
 
   const handleReplyFormClose = useCallback(() => {
     setShowReplyForm(false);
@@ -79,13 +83,13 @@ export const CommentItem: React.FC<{
         $parentId={comment.parentId}
         dangerouslySetInnerHTML={{ __html: comment.content }}
       />
-      <IconContainer>
+      <IconContainer withFrameButtonGroup={true}>
         <IconButton onClick={handleLike}>
           {like}
           <FcLike size={sizeIcon} />
         </IconButton>
-        <IconButton>
-          <FcDislike size={sizeIcon} onClick={handleDisLike} />
+        <IconButton onClick={handleDisLike}>
+          <FcDislike size={sizeIcon} />
           {dislike}
         </IconButton>
         <IconButton onClick={() => setShowReplyForm(!showReplyForm)}>

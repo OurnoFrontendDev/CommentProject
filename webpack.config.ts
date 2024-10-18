@@ -4,10 +4,9 @@ import { Configuration } from 'webpack';
 import Dotenv from 'dotenv-webpack';
 
 import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import HtmlWebpackPlugin = require('html-webpack-plugin');
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 interface Environment {
   production: boolean;

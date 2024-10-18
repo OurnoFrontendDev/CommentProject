@@ -1,14 +1,27 @@
 import { styled } from 'styled-components';
 import { VariableSizeList as List } from 'react-window';
+import { IconContainerProps } from '../../types';
+
+export const IconContainer = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['withFrameButtonGroup'].includes(prop),
+})<IconContainerProps>`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border: ${({ withFrameButtonGroup }) =>
+    withFrameButtonGroup ? '1px solid #00bfff' : 'none'};
+  border-radius: 0 0 8px 8px;
+  border-top: none;
+  gap: 7px;
+  padding: 6px;
+`;
 
 export const AppContainer = styled.div`
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  align-items: center;
   width: 100%;
-  height: 100vh;
-  padding: 40px;
+  margin: 0 auto;
+  max-width: 628px;
 `;
 export const CommentWrapper = styled.div`
   display: flex;
@@ -16,35 +29,43 @@ export const CommentWrapper = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #ffff;
-  padding: 10px 20px;
+  gap: 20px;
+  padding: 10px 0;
+  min-width: 596px;
 `;
 export const Header = styled.h2`
   display: inline-flex;
-  width: 100%;
-  margin-bottom: 10px;
+  min-width: 596px;
+  font-size: 26px;
+  line-height: 35px;
+  font-weight: var(--font-weight-text-large);
   text-align: start;
   justify-self: start;
 `;
-
 
 export const CommentContentContainer = styled.div<{ $parentId?: string }>`
   display: flex;
   width: 100%;
   flex-direction: column;
-  margin: ${(props) => (props.$parentId === null ? '0' : '6px 0 16px 14px')};
+  padding: ${(props) => (props.$parentId === null ? '0' : '6px 0 16px 14px')};
 `;
 
 export const CommentItemAvNameContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  border: var(--border-for-comment-element);
+  border-radius: 8px 8px 0 0;
+  border-bottom: none;
+  padding: 6px;
 `;
 export const CommentForm = styled.div<{ $parentId?: string }>`
   width: 100%;
-  margin: 10px 0;
   padding: 10px;
   border: none;
-  height: auto;
+  border-right: var(--border-for-comment-element);
+  border-left: var(--border-for-comment-element);
+  height: fit-content;
   color: ${(props) => (props.$parentId === null ? 'black' : 'grey')};
 `;
 
@@ -53,18 +74,13 @@ export const UserName = styled.span`
   font-size: 16px;
 `;
 
-export const IconContainer = styled.div`
-  width: 100%;
+export const IconButton = styled.button<{ disabled?: boolean }>`
   display: flex;
-  align-items: center;
-`;
-export const IconButton = styled.button<{ isDisabledFormAdd?: boolean }>`
   background: none;
   border: none;
   cursor: pointer;
-  margin: 0 5px;
   font-size: 1.5em;
-  color: ${(props) => (props.isDisabledFormAdd ? 'gray' : '#0e7cdd')};
+  color: ${(props) => (props.disabled ? 'gray' : '#0e7cdd')};
 
   &:hover {
     color: #000;
@@ -73,64 +89,73 @@ export const IconButton = styled.button<{ isDisabledFormAdd?: boolean }>`
 
 export const FormContainer = styled.div`
   border: 1px solid #00bfff;
-  padding: 15px;
+  padding: 20px;
   border-radius: 8px;
   margin-bottom: 20px;
-  width: 100%;
+  min-width: 596px;
+  height: 259px;
 `;
 export const Username = styled.span`
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: var(--font-weight-text-large);
+  line-height: 23px;
   color: #333;
 `;
 export const Avatar = styled.img`
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   margin-right: 10px;
 `;
 
 export const TextArea = styled.textarea`
   width: 100%;
-  margin: 10px 0;
-  padding: 10px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  padding: 3px;
   border: none;
-  height: 100px;
+  min-height: 85px;
   border-radius: 4px;
   resize: none;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 27px;
+  font-family: 'Source Sans Pro', sans-serif;
 `;
 export const ButtonsContainer = styled.div`
   display: flex;
-  gap: 50px;
   align-items: center;
   justify-content: space-between;
   border-top: 1px solid rgba(128, 128, 128, 0.6);
-  padding: 15px 0 0 0;
+  padding: 16px 0 0 0;
 `;
-export const AddCommentButton = styled.button<{ isDisabledFormAdd: boolean }>`
-  padding: 15px 20px;
-  background-color: ${(props) =>
-  props.isDisabledFormAdd ? 'gray' : '#0e7cdd'};
+export const AddCommentButton = styled.button<{ disabled?: boolean }>`
+  padding: 15px 26px;
+  background-color: ${(props) => (props.disabled ? 'gray' : '#0e7cdd')};
   color: white;
   border: none;
-  border-radius: 15px;
+  cursor: pointer;
+  border-radius: 8px;
 `;
 
 export const CommentFormAvNameContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 `;
 
-export const CommentContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  width: 100%;
-`;
 export const StyledList = styled(List)`
-  scrollbar-width: none;
-
   &::-webkit-scrollbar {
-    display: none;
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #00bfff;
+    border-radius: 20px;
+    border: 3px solid #00bfff;
   }
 `;
 export const ModalForm = styled.div`
@@ -162,7 +187,7 @@ export const ReplyModalTextArea = styled.textarea`
   padding: 10px;
 
   &:focus {
-    border: 1px solid #4a90e2;
+    border: 1px solid #00bfff;
     border-radius: 20px;
     outline: none;
   }
