@@ -1,12 +1,13 @@
-const express = require('express');
-const cors = require('cors');
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-const path = require('path');
+import express from 'express';
+import cors from 'cors';
+import low from 'lowdb';
+import FileSync from 'lowdb/adapters/FileSync';
+import path from 'path';
 
 const app = express();
 const port = 3000;
-const { v4: uuidv4 } = require('uuid');
+import { v4 as uuidv4 } from 'uuid';
+
 app.use(cors()); // Включаем CORS для всех маршрутов
 app.use(express.json());
 
