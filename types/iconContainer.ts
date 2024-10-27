@@ -1,3 +1,3 @@
 export interface IconContainerProps {
-  withFrameButtonGroup?: boolean;
+  buttonGroupWithBorder?: boolean;
 }

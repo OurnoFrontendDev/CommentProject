@@ -373,6 +373,94 @@
       "createdAt": "2024-10-18T23:52:11.162Z",
       "like": 0,
       "dislike": 0
+    },
+    {
+      "id": "e27a31a3-3fdf-4e1d-b426-941a5cc36f4c",
+      "content": "123",
+      "username": "Jane Doe",
+      "avatar": "/img/default-avatar.jpg",
+      "userId": null,
+      "parentId": "51c07a55-a585-4228-bb1b-b34af0201f51",
+      "createdAt": "2024-10-19T00:09:16.994Z",
+      "like": 0,
+      "dislike": 0
+    },
+    {
+      "id": "1433cbc7-70d2-4691-89b9-82e937ff1eb6",
+      "content": "123",
+      "username": "Jane Doe",
+      "avatar": "/img/default-avatar.jpg",
+      "userId": null,
+      "parentId": "e27a31a3-3fdf-4e1d-b426-941a5cc36f4c",
+      "createdAt": "2024-10-19T00:09:19.459Z",
+      "like": 0,
+      "dislike": 0
+    },
+    {
+      "id": "9517e23e-1a1e-44e6-a29d-9f5e7b474c4c",
+      "content": "1",
+      "username": "Jane Doe",
+      "avatar": "/icons/default-avatar.jpg",
+      "userId": null,
+      "parentId": "51c07a55-a585-4228-bb1b-b34af0201f51",
+      "createdAt": "2024-10-25T20:37:13.889Z",
+      "like": 0,
+      "dislike": 0
+    },
+    {
+      "id": "68e8da80-00a3-4e01-8f0e-e047fa546210",
+      "content": "123",
+      "username": "Jane Doe",
+      "avatar": "/icons/default-avatar.jpg",
+      "userId": null,
+      "parentId": "0a5500f6-92bd-44d6-a974-0e5316ecb2a9",
+      "createdAt": "2024-10-26T18:40:56.525Z",
+      "like": 0,
+      "dislike": 0
+    },
+    {
+      "id": "db682947-cb5b-4bc7-8af7-56c9c8004d43",
+      "content": "1231df",
+      "username": "Jane Doe",
+      "avatar": "/icons/default-avatar.jpg",
+      "userId": null,
+      "parentId": "68e8da80-00a3-4e01-8f0e-e047fa546210",
+      "createdAt": "2024-10-26T18:40:59.662Z",
+      "like": 0,
+      "dislike": 0
+    },
+    {
+      "id": "e9c5ea7c-708a-4825-8391-b809c1dc64cd",
+      "content": "1231df",
+      "username": "Jane Doe",
+      "avatar": "/icons/default-avatar.jpg",
+      "userId": null,
+      "parentId": "68e8da80-00a3-4e01-8f0e-e047fa546210",
+      "createdAt": "2024-10-26T18:41:01.374Z",
+      "like": 0,
+      "dislike": 0
+    },
+    {
+      "id": "d61ed46a-b178-4833-b95b-108ce9f8b729",
+      "content": "123",
+      "username": "John Doe",
+      "avatarUrl": "https://wh40k.lexicanum.com/mediawiki/images/thumb/7/72/SangTerra.jpg/370px-SangTerra.jpg",
+      "userId": 1,
+      "parentId": null,
+      "createdAt": "2024-10-27T19:49:31.914Z",
+      "like": 0,
+      "dislike": 0
+    },
+    {
+      "id": "98975b5e-f885-4933-a0f2-9eda04d25333",
+      "content": "123",
+      "username": "Jane Doe",
+      "avatarUrl": "/icons/default-avatar.jpg",
+      "userId": null,
+      "parentId": "d61ed46a-b178-4833-b95b-108ce9f8b729",
+      "createdAt": "2024-10-27T19:49:33.683Z",
+      "like": 0,
+      "dislike": 0
     }
   ]
 }

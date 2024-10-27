@@ -1,7 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
-    
     :root {
         --border-for-comment-element: 1px solid #00bfff;
         --font-weight-text-large: 600;

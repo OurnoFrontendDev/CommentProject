@@ -12,7 +12,6 @@ interface Environment {
   production: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 export default (env: Environment, argv: { mode: string }): Configuration => {

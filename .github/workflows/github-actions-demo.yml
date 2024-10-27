@@ -4,7 +4,7 @@ on:
   push:
     branches: [ Comment ]
   pull_request:
-    branches: [ Comment ]
+    branches: [ '*' ]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest

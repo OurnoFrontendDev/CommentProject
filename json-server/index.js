@@ -1,29 +1,28 @@
-import express from 'express';
-import cors from 'cors';
-import low from 'lowdb';
-import FileSync from 'lowdb/adapters/FileSync';
-import path from 'path';
+const express = require('express');
+const cors = require('cors');
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+const path = require('path');
 
 const app = express();
 const port = 3000;
-import { v4 as uuidv4 } from 'uuid';
-
-app.use(cors()); // Включаем CORS для всех маршрутов
+const { v4: uuidv4 } = require('uuid');
+app.use(cors());
 app.use(express.json());
+// app.use('/icons', express.static(path.join(__dirname, 'src/icons')));
 
 const adapter = new FileSync(path.join(__dirname, 'db.json'));
 
 const db = low(adapter);
 
-// POST /comments - добавление нового комментария
 app.post('/comments', (req, res) => {
-  const { content, username, avatar, userId, parentId } = req.body;
+  const { content, username, avatarUrl, userId, parentId } = req.body;
 
   const newComment = {
     id: uuidv4(),
     content,
     username,
-    avatar: avatar || '/img/default-avatar.jpg',
+    avatarUrl: avatarUrl || '/icons/default-avatar.jpg',
     userId: userId || null,
     parentId: parentId || null,
     createdAt: new Date().toISOString(),
@@ -31,25 +30,24 @@ app.post('/comments', (req, res) => {
     dislike: 0,
   };
   db.get('comments').push(newComment).write();
-  console.log('Добавлен новый комментарий:', newComment); // Лог добавления комментария
+  console.log('Добавлен новый комментарий:', newComment);
   res.status(201).json(newComment);
 });
 
-// GET /comments - получение всех комментариев
 app.get('/comments', (req, res) => {
-  const comments = db.get('comments').value(); // Получаем все комментарии из базы
+  const comments = db.get('comments').value();
   res.json(comments);
 });
 app.post('/comments/:id/like', (req, res) => {
   const { id } = req.params;
-  const { like } = req.body; // Ожидаем поле "type" с значением "like" или "dislike"
+  const { like } = req.body;
 
   const comment = db.get('comments').find({ id }).value();
 
   if (comment) {
     comment.like = like;
 
-    db.get('comments').find({ id }).assign(comment).write(); // Сохраняем изменения
+    db.get('comments').find({ id }).assign(comment).write();
     console.log(`Обновлена реакция для комментария с ID ${id}:`, comment);
 
     // Возвращаем весь массив комментариев
@@ -63,17 +61,16 @@ app.post('/comments/:id/like', (req, res) => {
 
 app.post('/comments/:id/dislike', (req, res) => {
   const { id } = req.params;
-  const { dislike } = req.body; // Expect "dislike" in the request body
+  const { dislike } = req.body;
 
   const comment = db.get('comments').find({ id }).value();
 
   if (comment) {
     comment.dislike = dislike; // Update the dislike count
 
-    db.get('comments').find({ id }).assign(comment).write(); // Save changes
+    db.get('comments').find({ id }).assign(comment).write();
     console.log(`Dislike updated for comment with ID ${id}:`, comment);
 
-    // Return all comments
     const allComments = db.get('comments').value();
     res.json(allComments);
   } else {
@@ -83,12 +80,12 @@ app.post('/comments/:id/dislike', (req, res) => {
 });
 app.delete('/comments/:id', (req, res) => {
   const { id } = req.params;
-  console.log(`Received ID for deletion: ${id}`); // Log the ID being passed
+  console.log(`Received ID for deletion: ${id}`);
 
   const commentToDelete = db.get('comments').find({ id }).value();
 
   if (commentToDelete) {
-    db.get('comments').remove({ id }).write(); // Delete comment
+    db.get('comments').remove({ id }).write();
     console.log(`Комментарий с ID ${id} удалён`);
     res.status(200).json({ message: 'Комментарий удалён' });
   } else {
@@ -98,10 +95,9 @@ app.delete('/comments/:id', (req, res) => {
 });
 
 app.post('/comments/:parentId/reply', (req, res) => {
-  const { parentId } = req.params; // ID родительского комментария
-  const { content, username, avatar, userId } = req.body; // Данные нового ответа
+  const { parentId } = req.params;
+  const { content, username,  avatarUrl, userId } = req.body;
 
-  // Найти родительский комментарий по ID
   const parentComment = db.get('comments').find({ id: parentId }).value();
 
   if (!parentComment) {
@@ -110,27 +106,24 @@ app.post('/comments/:parentId/reply', (req, res) => {
       .json({ error: 'Родительский комментарий не найден' });
   }
 
-  // Создать новый ответ (комментарий с parentId)
   const reply = {
     id: uuidv4(),
     content,
     username,
-    avatar: avatar || '/img/default-avatar.jpg',
+    avatarUrl: avatarUrl || '/icons/default-avatar.jpg',
     userId: userId || null,
-    parentId: parentId, // Указываем ID родительского комментария
+    parentId: parentId,
     createdAt: new Date().toISOString(),
     like: 0,
     dislike: 0,
   };
 
-  // Добавить новый комментарий в базу
   db.get('comments').push(reply).write();
 
   console.log(`Добавлен новый ответ на комментарий с ID ${parentId}:`, reply);
-  res.status(201).json(reply); // Возвращаем новый ответ
+  res.status(201).json(reply);
 });
 
-// Запуск сервера
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

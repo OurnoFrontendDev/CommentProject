@@ -5,8 +5,6 @@ const useClickOutside = (ref: React.RefObject<HTMLElement>, cb: () => void) => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         cb();
-      } else {
-        console.log('Click input');
       }
     };
     document.addEventListener('mousedown', handleClickOutside);

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { useReplyCommentMutation } from '../api/commentApi';
-import { usePortal } from '../hooks/usePortal';
+import { useReplyCommentMutation } from '../../api/commentApi';
+import { usePortal } from '../../hooks/usePortal';
 import { createPortal } from 'react-dom';
 import {
   ModalContent,
@@ -8,8 +8,8 @@ import {
   ReplyCommentAdd,
   ReplyCommentAddContainer,
   ReplyModalTextArea,
-} from './styledComponents/StyledComponents';
-import useClickOutside from '../hooks/useClickOutside';
+} from './styled';
+import useClickOutside from '../../hooks/useClickOutside';
 
 interface ReplyFormProps {
   parentId: string;
@@ -28,7 +28,7 @@ export const ReplyModalForm: React.FC<ReplyFormProps> = ({
 
   const [addReplyComment] = useReplyCommentMutation();
 
-  const isDisabledReplyAdd = content.length === 0;
+  const isDisabledReplyCommentBtn = content.length === 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ export const ReplyModalForm: React.FC<ReplyFormProps> = ({
       parentId: parentId,
       content,
       username: 'Jane Doe',
-      avatar: '/img/default-avatar.jpg',
+      avatar: '/icons/default-avatar.jpg',
       userId: null,
     });
     setContent('');
@@ -53,7 +53,7 @@ export const ReplyModalForm: React.FC<ReplyFormProps> = ({
             placeholder="Add new reply"
           />
           <ReplyCommentAddContainer>
-            <ReplyCommentAdd type="submit" disabled={isDisabledReplyAdd}>
+            <ReplyCommentAdd type="submit" disabled={isDisabledReplyCommentBtn}>
               Ответить
             </ReplyCommentAdd>
           </ReplyCommentAddContainer>

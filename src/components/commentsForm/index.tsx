@@ -1,44 +1,41 @@
 import React, { useCallback, useState } from 'react';
-import { useAddCommentMutation } from '../api/commentApi';
+import { useAddCommentMutation } from '../../api/commentApi';
 import { AiOutlineBold, AiOutlineItalic, AiOutlineLink } from 'react-icons/ai';
 import {
-  Avatar,
-  IconButton,
-  IconContainer,
-  FormContainer,
-  Username,
-  TextArea,
-  ButtonsContainer,
   AddCommentButton,
-  CommentFormAvNameContainer,
-} from './styledComponents/StyledComponents';
+  ButtonsContainer,
+  FormContainer,
+  TextArea,
+  Username,
+} from './styled';
+import {
+  IconContainer,
+  IconButton,
+  CommentAuthor,
+} from '../commentWithReplies/styled';
+import { Icon } from '../svgLoader';
 
 export interface CommentFormProps {
   parentId?: number | null;
   username: string;
-  avatar?: string;
   initialContent?: string;
 }
 
 export const CommentForm: React.FC<CommentFormProps> = ({
   parentId,
   username,
-  avatar,
   initialContent,
 }) => {
   const [addComment] = useAddCommentMutation();
 
   const [content, setContent] = useState(initialContent || '');
 
-  const isDisabledFormAdd = content.length === 0;
+  const isDisabledAddCommentBtn = content.length === 0;
 
-  const handleTextFormatClick = useCallback(
-    (tag: string) => {
-      const newText = `${tag}${content}${tag}`;
-      setContent(newText);
-    },
-    [content],
-  );
+  const handleTextFormatClick = (tag: string) => {
+    const newText = `${tag}${content}${tag}`;
+    setContent(newText);
+  };
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,7 +45,8 @@ export const CommentForm: React.FC<CommentFormProps> = ({
           content,
           parentId: parentId || null,
           userId: 1,
-          avatar: '/img/avatar1.jpg',
+          avatarUrl:
+            'https://wh40k.lexicanum.com/mediawiki/images/thumb/7/72/SangTerra.jpg/370px-SangTerra.jpg',
           username: username,
           createdAt: new Date().toISOString(),
           like: 0,
@@ -68,39 +66,47 @@ export const CommentForm: React.FC<CommentFormProps> = ({
 
   return (
     <FormContainer>
-      <CommentFormAvNameContainer>
-        <Avatar src={avatar} alt={username} />
+      <CommentAuthor>
+        <Icon
+          src={
+            'https://wh40k.lexicanum.com/mediawiki/images/thumb/7/72/SangTerra.jpg/370px-SangTerra.jpg'
+          }
+          width={40}
+          height={40}
+          borderRadius={20}
+        />
         <Username>{'John Doe'}</Username>
-      </CommentFormAvNameContainer>
+      </CommentAuthor>
       <form onSubmit={handleSubmit}>
         <TextArea
-          id="commentTextarea"
           placeholder="Comment"
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setContent(e.target.value)
+          }
           required
         />
         <ButtonsContainer>
-          <IconContainer withFrameButtonGroup={false}>
+          <IconContainer buttonGroupWithBorder={false}>
             <IconButton
               title="Bold"
-              onClick={() => handleTextFormatClick('<b>')}
-              disabled={isDisabledFormAdd}
+              onClick={() => handleTextFormatClick('**')}
+              disabled={isDisabledAddCommentBtn}
             >
               <AiOutlineBold />
             </IconButton>
             <IconButton
               title="Italic"
-              onClick={() => handleTextFormatClick('<em>')}
-              disabled={isDisabledFormAdd}
+              onClick={() => handleTextFormatClick('*')}
+              disabled={isDisabledAddCommentBtn}
             >
               <AiOutlineItalic />
             </IconButton>
-            <IconButton disabled={isDisabledFormAdd} title="Link">
+            <IconButton disabled={isDisabledAddCommentBtn} title="Link">
               <AiOutlineLink />
             </IconButton>
           </IconContainer>
-          <AddCommentButton type="submit" disabled={isDisabledFormAdd}>
+          <AddCommentButton type="submit" disabled={isDisabledAddCommentBtn}>
             Comment
           </AddCommentButton>
         </ButtonsContainer>
