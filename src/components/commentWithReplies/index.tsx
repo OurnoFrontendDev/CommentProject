@@ -16,7 +16,7 @@ import {
   UserName,
 } from './styled';
 import { IComments } from '../../../types/comments';
-import { Icon } from '../svgLoader';
+import { iconLoader } from '../iconLoader';
 import { DeleteModalForm } from '../deleteModalForm';
 import { timeAgo } from '../../utils/format/date';
 
@@ -81,7 +81,7 @@ export const CommentWithReplies: React.FC<CommentWithRepliesProps> = ({
     <CommentContentContainer>
       <CommentAvatarAuthor>
         {comment.username === 'John Doe' ? (
-          <Icon
+          <iconLoader
             src={
               'https://wh40k.lexicanum.com/mediawiki/images/thumb/7/72/SangTerra.jpg/370px-SangTerra.jpg'
             }
@@ -90,7 +90,7 @@ export const CommentWithReplies: React.FC<CommentWithRepliesProps> = ({
             borderRadius={20}
           />
         ) : (
-          <Icon
+          <iconLoader
             src={
               'https://cdn.freelance.ru/img/portfolio/pics/00/39/C4/3785853.jpg?mt=b3245cbd'
             }

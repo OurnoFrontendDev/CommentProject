@@ -13,7 +13,7 @@ import {
   IconButton,
   CommentAuthor,
 } from '../commentWithReplies/styled';
-import { Icon } from '../svgLoader';
+import { iconLoader } from '../iconLoader';
 
 export interface CommentFormProps {
   parentId?: number | null;
@@ -67,7 +67,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({
   return (
     <FormContainer>
       <CommentAuthor>
-        <Icon
+        <iconLoader
           src={
             'https://wh40k.lexicanum.com/mediawiki/images/thumb/7/72/SangTerra.jpg/370px-SangTerra.jpg'
           }

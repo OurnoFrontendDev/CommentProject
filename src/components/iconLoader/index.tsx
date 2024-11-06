@@ -13,7 +13,7 @@ interface IconBaseProps extends SvgProps {
   borderRadius: number | string;
 }
 
-export const Icon: FC<IconBaseProps> = (props) => {
+export const iconLoader: FC<IconBaseProps> = (props) => {
   const { className, Svg, src, width, height, alt, borderRadius } = props;
 
   if (src) {
